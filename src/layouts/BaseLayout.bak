@@ -1,0 +1,180 @@
+---
+import type { Locale } from '../i18n/utils';
+import { getTranslations, getAlternateLinks, getPathWithLocale } from '../i18n/utils';
+import SEO from '../components/SEO.astro';
+import '../styles/global.css';
+
+// 导入资源
+import logoSvg from '../assets/images/logo.svg';
+import repeatJpg from '../assets/images/repeat.jpg';
+import hideSvg from '../assets/images/hide.svg';
+import tagPng from '../assets/images/tag.png';
+import bgJpg from '../assets/images/bg.jpg';
+import loadGif from '../assets/images/load.gif';
+import toolPng from '../assets/images/tool.png';
+import boxJpg from '../assets/images/box.jpg';
+
+interface Props {
+  title?: string;
+  description?: string;
+  locale: Locale;
+}
+
+const { title, description, locale } = Astro.props;
+const t = getTranslations(locale);
+const resolvedTitle = title ? `${t.site.title} - ${title}` : t.site.title;
+const resolvedDescription = description ?? t.site.description;
+const currentPath = Astro.url.pathname;
+const langSwitchLocale = locale === 'zh' ? 'en' : 'zh';
+const langSwitchText = t.site.langBtn;
+
+// import.meta.env.BASE_URL 由 Astro/Vite 自动注入，包含配置的 base 路径
+// 如 "/mschf/" 或 "/"
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '';
+---
+
+<!doctype html>
+<html lang={locale === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <SEO title={resolvedTitle} description={resolvedDescription} locale={locale} path={currentPath} />
+    <meta name="keywords" content="TOHC, creative, projects, cabinet, 创意, 项目" />
+    <style set:html={`
+      :root {
+        --asset-logo: url('${logoSvg.src}');
+        --asset-repeat: url('${repeatJpg.src}');
+        --asset-hide: url('${hideSvg.src}');
+        --asset-tag: url('${tagPng.src}');
+        --asset-project-bg: url('${bgJpg.src}');
+      }
+      @font-face {
+        font-family: 'AvenirNext-BoldItalic';
+        src: url('${base}/assets/fonts/AvenirNext-BoldItalic.woff2') format('woff2'),
+             url('${base}/assets/fonts/AvenirNext-BoldItalic.woff') format('woff'),
+             url('${base}/assets/fonts/AvenirNext-BoldItalic.ttf') format('truetype'),
+             url('${base}/assets/fonts/AvenirNext-BoldItalic.svg#AvenirNext-BoldItalic') format('svg');
+        font-display: swap;
+        font-weight: bold;
+        font-style: italic;
+      }
+    `} />
+  </head>
+  <body>
+    <div id="loading-screen" role="status" aria-label={t.site.loading}>
+      <img src={loadGif.src} alt="Loading" id="loading-gif" />
+    </div>
+
+    <div id="main-content">
+      <header class="header">
+        <a href={base + getPathWithLocale('/', locale)} class="header-logo">
+          <img src={toolPng.src} width="250" alt="TOHC" />
+        </a>
+        <a href={base + getPathWithLocale(currentPath.replace(base, '').replace(/^\/(zh|en)/, '') || '/', langSwitchLocale)} class="lang-switch" id="lang-switch" aria-label="Switch Language">
+          {langSwitchText}
+        </a>
+      </header>
+
+      <main class="cabinet-grid" id="cabinet-grid" role="list" aria-label={t.site.cabinetAria}>
+        <div class="top">
+          <img src={boxJpg.src} />
+          <img class="md" src={boxJpg.src} />
+          <img class="md" src={boxJpg.src} />
+        </div>
+        <slot />
+      </main>
+    </div>
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "TOHC",
+      "description": t.site.description,
+      "inLanguage": locale === 'zh' ? ["zh-CN", "en"] : ["en", "zh-CN"]
+    })} />
+
+    <script>
+      import gsap from 'gsap';
+
+      const GIF_DURATION = 2200;
+
+      // Loading screen
+      function initLoading() {
+        const gif = document.getElementById('loading-gif') as HTMLImageElement;
+        const loadScreen = document.getElementById('loading-screen')!;
+        const mainContent = document.getElementById('main-content')!;
+
+        function startTransition() {
+          gsap.to(loadScreen, {
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.inOut',
+            onComplete: () => {
+              loadScreen.style.display = 'none';
+              mainContent.style.visibility = 'visible';
+              gsap.to(mainContent, {
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power2.inOut'
+              });
+            }
+          });
+        }
+
+        if (gif.complete) {
+          setTimeout(startTransition, GIF_DURATION);
+        } else {
+          gif.onload = () => {
+            setTimeout(startTransition, GIF_DURATION);
+          };
+          gif.onerror = () => {
+            startTransition();
+          };
+          setTimeout(() => {
+            if (loadScreen.style.display !== 'none') {
+              startTransition();
+            }
+          }, GIF_DURATION);
+        }
+      }
+
+      // Touch device: tap to toggle LED
+      function initTouchToggle() {
+        if (!('ontouchstart' in window)) return;
+        document.querySelectorAll('.cabinet-item:not(.cabinet-empty)').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            const target = e.target as HTMLElement;
+            const isActive = el.classList.contains('led-active');
+            if (!isActive) {
+              // First tap: activate LED, block navigation
+              e.preventDefault();
+              e.stopPropagation();
+              document.querySelectorAll('.cabinet-item.led-active').forEach((other) => {
+                if (other !== el) other.classList.remove('led-active');
+              });
+              el.classList.add('led-active');
+            } else if (target.classList.contains('cabinet-led-link')) {
+              // LED active + tap on link: allow navigation
+              return;
+            } else {
+              // LED active + tap elsewhere: deactivate
+              e.preventDefault();
+              el.classList.remove('led-active');
+            }
+          });
+        });
+      }
+
+      // Click outside to close LED
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('.cabinet-item') || target.closest('.lang-switch')) return;
+        document.querySelectorAll('.cabinet-item.led-active').forEach((el) => {
+          el.classList.remove('led-active');
+        });
+      });
+
+      initLoading();
+      initTouchToggle();
+    </script>
+  </body>
+</html>

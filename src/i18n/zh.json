@@ -1,0 +1,38 @@
+{
+  "site": {
+    "title": "TOHC",
+    "description": "TOHC - 创意项目展示柜",
+    "langBtn": "EN",
+    "cabinetAria": "项目展示柜",
+    "loading": "加载中..."
+  },
+  "nav": {
+    "home": "首页",
+    "about": "关于我们",
+    "contact": "联系我们"
+  },
+  "projects": [
+    {
+      "title": "Ostracism",
+      "tag": "S6E11",
+      "image": "project.svg",
+      "link": "https://ostracism.vip"
+    },
+    {
+      "title": "项目1标题",
+      "tag": "S6E2",
+      "image": "project.svg",
+      "link": "https://www.baidu.com"
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

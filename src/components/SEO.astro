@@ -1,0 +1,44 @@
+---
+import type { Locale } from '../i18n/utils';
+import { getAlternateLinks } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  path: string;
+}
+
+const { title, description, locale, path } = Astro.props;
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || '';
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '';
+const alternateLinks = getAlternateLinks(path, base);
+
+const ogImage = `${siteUrl}${base}/og-image.png`;
+---
+
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={`${siteUrl}${path}`} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content={locale === 'zh' ? 'zh_CN' : 'en_US'} />
+<meta property="og:image" content={ogImage} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={`${siteUrl}${path}`} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImage} />
+
+<!-- Alternate language links for SEO -->
+{alternateLinks.map(({ locale: altLocale, href }) => (
+  <link rel="alternate" hreflang={altLocale} href={`${siteUrl}${base}${href}`} />
+))}
+<link rel="alternate" hreflang="x-default" href={`${siteUrl}${base}${alternateLinks.find(l => l.locale === 'en')?.href || '/'}`} />

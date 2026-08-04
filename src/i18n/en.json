@@ -1,0 +1,38 @@
+{
+  "site": {
+    "title": "TOHC",
+    "description": "TOHC - Creative Project Cabinet",
+    "langBtn": "中文",
+    "cabinetAria": "Project Cabinet",
+    "loading": "Loading..."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "projects": [
+    {
+      "title": "Ostracism",
+      "tag": "S6E1",
+      "image": "project.svg",
+      "link": "https://ostracism.vip"
+    },
+    {
+      "title": "VIP PLAYER BENEFITS OF TOHC",
+      "tag": "S6E2",
+      "image": "project.svg",
+      "link": "https://www.baidu.com"
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

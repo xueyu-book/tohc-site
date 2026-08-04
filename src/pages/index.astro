@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getTranslations } from '../i18n/utils';
+
+const locale = 'en' as const;
+const t = getTranslations(locale);
+const projects = t.projects;
+
+// 动态导入所有项目图片
+const projectImages = import.meta.glob('../assets/projects/*', { eager: true, import: 'default' });
+const getProjectImage = (name: string) => {
+  const path = `../assets/projects/${name}`;
+  const image = projectImages[path] as { src: string } | undefined;
+  return image?.src || '';
+};
+
+function escapeHtml(str: string) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+---
+
+<BaseLayout locale={locale} description={t.site.description}>
+  {Array.from({ length: projects.length }, (_, i) => {
+    const item = projects && projects[i] ? projects[i] : null;
+    return (
+      <div class={`cabinet-item${item ? '' : ' cabinet-empty'}`} role="listitem" aria-label={item ? item.title : ''}>
+        <div class="cabinet-title" data-index={i}>{item ? item.title : ''}</div>
+        <div class="cabinet-led-wrap">
+          <img src={item ? getProjectImage(item.image) : ""} alt={item ? item.title : ""} aria-hidden="true" />
+          {item && (
+            <a class="cabinet-led-link" href={escapeHtml(item.link)} target="_blank" rel="noopener noreferrer" aria-label={escapeHtml(item.title)}></a>
+          )}
+        </div>
+        <div class="cabinet-tag">{item ? item.tag : ''}</div>
+      </div>
+    );
+  })}
+</BaseLayout>

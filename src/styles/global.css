@@ -1,0 +1,309 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --cols: 3;
+    --font-size-title: 1.4vw;
+    --font-size-tag: 1vw;
+    --bg-color: #0a0a0a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-color);
+    color: #fff;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#loading-screen img {
+    object-fit: contain;
+    width: 1.8vw;
+}
+
+/* Main Content */
+#main-content {
+    opacity: 0;
+    visibility: hidden;
+    min-height: 100vh;
+    background-color: #000;
+    /* background: url('/assets/bg.jpg');
+    background-size: 100% auto; */
+    padding: 5vw 0 0;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 81vw;
+    margin: 0 auto;
+}
+.header-logo{
+    width: 21vw;
+}
+.header-logo img {
+    display: block;
+    width: 100%;
+}
+
+.lang-switch {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    padding: .4vw 1vw;
+    border-radius: 1vw;
+    font-size: .7vw;
+    font-family: inherit;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    user-select: none;
+    text-decoration: none;
+    display: inline-block;
+    position: absolute;
+    right: 3vw;
+    top: 2vw;
+    display: none;
+}
+
+.lang-switch:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.08);
+}
+
+/* Cabinet Grid */
+.cabinet-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    max-width: 84.5vw;
+    margin: 0 auto;
+    position: relative;
+    top: -5px;
+}
+.top{
+    grid-column: span 3;
+    display: flex;
+}
+.top img{
+    width: 33.33333%;
+}
+
+.cabinet-grid::before {
+    content: '';
+    position: absolute;
+    z-index: 10;
+    background: var(--asset-logo) no-repeat;
+    background-size: 100% auto;
+    width: 18%;
+    height: 5vw;
+    right: 1.5%;
+    top: 4.6%;
+}
+
+.cabinet-item {
+    position: relative;
+    aspect-ratio: 1 / 0.2597402597402597;
+    overflow: hidden;
+    background-image: var(--asset-repeat);
+    background-size: 100% 100%;
+}
+
+.cabinet-empty .cabinet-title, .cabinet-empty .cabinet-tag { display: none; }
+
+.cabinet-led-wrap {
+    position: absolute;
+    top: 0%;
+    left: 3%;
+    right: 3%;
+    bottom: 0;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    background-image: var(--asset-project-bg);
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cabinet-empty .cabinet-led-wrap {
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+}
+
+.cabinet-empty .cabinet-led-wrap img {
+    display: none;
+}
+
+.cabinet-empty .cabinet-led-wrap::before {
+    content: '';
+    background: var(--asset-hide) no-repeat;
+    background-size: 100% auto;
+    width: 20%;
+    aspect-ratio: 1 / 1;
+    margin-top: 2%;
+    margin-left: 6%;
+}
+
+.cabinet-led-wrap img {
+    width: auto;
+    height: 64%;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.8s ease 0.7s;
+}
+
+.cabinet-item:not(.cabinet-empty):hover .cabinet-led-wrap,
+.cabinet-item.led-active .cabinet-led-wrap, 
+.cabinet-item:not(.cabinet-empty):hover .cabinet-led-wrap img,
+.cabinet-item.led-active .cabinet-led-wrap img
+{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.cabinet-led-link {
+    position: absolute;
+    display: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+}
+
+.cabinet-item:not(.cabinet-empty):hover .cabinet-led-wrap .cabinet-led-link{
+    display: block;
+}
+
+.cabinet-tag {
+    font-family: 'AvenirNext-BoldItalic';
+    position: absolute;
+    bottom: 6.5%;
+    right: 4%;
+    width: 17%;
+    aspect-ratio: 1 / .6;
+    z-index: 2;
+    text-align: center;
+    background: var(--asset-tag) no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: var(--font-size-tag);
+    font-style: italic;
+}
+
+.cabinet-title {
+    position: absolute;
+    left: 7%;
+    top: 9%;
+    font-size: var(--font-size-title);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    line-height: 1.3;
+    display: block;
+    max-width: 92%;
+}
+
+/* Custom Cursor */
+/* #custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-4px, -4px);
+    transition: transform 0.08s ease-out, opacity 0.2s;
+    opacity: 0;
+    mix-blend-mode: difference;
+}
+
+#custom-cursor.visible { opacity: 1; }
+
+#custom-cursor svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+} */
+
+/* Responsive */
+@media (max-width: 1200px) {
+    :root {
+        --cols: 1;
+        --font-size-title: 4vw;
+        --font-size-tag: 3vw;
+    }
+
+    .header-logo {
+        width: 50vw;
+    }
+
+    .lang-switch {
+        padding: 1vw 3vw;
+        border-radius: 3vw;
+        font-size: 2.5vw;
+        top: 3vw;
+    }
+
+    .top{
+        grid-column: span 1;
+    }
+    .top img{
+        width: 100%;
+    }
+    .top img.md{
+        display: none;
+    }
+
+    #loading-screen img{
+        width: 7.5vw;
+    }
+
+    .cabinet-grid::before {
+        width: 47%;
+        right: 5%;
+        top: 2.5%;
+        height: 11vw;
+    }
+
+    .cabinet-item.led-active .cabinet-led-wrap .cabinet-led-link{
+        display: block;
+    }
+    
+    #main-content { padding: 80px 20px 0; }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
