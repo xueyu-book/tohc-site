@@ -164,7 +164,7 @@ body {
 
 .cabinet-led-wrap img {
     width: auto;
-    height: 64%;
+    height: 64%; /* 默认值；可在 i18n JSON 的 imageHeight 覆盖 */
     display: block;
     opacity: 0;
     transition: opacity 0.8s ease 0.7s;

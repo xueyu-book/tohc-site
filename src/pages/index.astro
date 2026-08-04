@@ -27,7 +27,12 @@ function escapeHtml(str: string) {
       <div class={`cabinet-item${item ? '' : ' cabinet-empty'}`} role="listitem" aria-label={item ? item.title : ''}>
         <div class="cabinet-title" data-index={i}>{item ? item.title : ''}</div>
         <div class="cabinet-led-wrap">
-          <img src={item ? getProjectImage(item.image) : ""} alt={item ? item.title : ""} aria-hidden="true" />
+          <img
+            src={item ? getProjectImage(item.image) : ""}
+            alt={item ? item.title : ""}
+            style={item?.imageHeight ? `height: ${item.imageHeight}` : undefined}
+            aria-hidden="true"
+          />
           {item && (
             <a class="cabinet-led-link" href={escapeHtml(item.link)} target="_blank" rel="noopener noreferrer" aria-label={escapeHtml(item.title)}></a>
           )}
