@@ -82,6 +82,23 @@ const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '';
         </div>
         <slot />
       </main>
+
+      <footer class="site-footer">
+        <a
+          href="https://beian.miit.gov.cn"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          粤ICP备2026126915号
+        </a>
+        <a
+          href="https://www.xiaohongshu.com/user/profile/69fb3d8e0000000002001c08?xsec_token=ABpN3sUtBdDY6wccECFpZQ9qkfXazFRjUta0KNLon1ocY%3D&xsec_source=pc_search"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          SUPPORT
+        </a>
+      </footer>
     </div>
 
     <script type="application/ld+json" set:html={JSON.stringify({

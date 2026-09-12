@@ -84,6 +84,28 @@ body {
     background: rgba(255,255,255,0.08);
 }
 
+/* Footer */
+.site-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    padding: 24px 20px 32px;
+    font-size: 10px;
+    line-height: 1;
+    color: #f8fafc;
+    white-space: nowrap;
+}
+
+.site-footer a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    opacity: 0.75;
+}
+
 /* Cabinet Grid */
 .cabinet-grid {
     display: grid;
@@ -295,6 +317,12 @@ body {
     }
     
     #main-content { padding: 80px 20px 0; }
+
+    .site-footer {
+        gap: 12px;
+        padding: 16px 20px calc(20px + env(safe-area-inset-bottom));
+        font-size: 8px;
+    }
 }
 
 .sr-only {
