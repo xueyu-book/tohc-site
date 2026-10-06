@@ -13,6 +13,7 @@ import bgJpg from '../assets/images/bg.jpg';
 import loadGif from '../assets/images/load.gif';
 import toolPng from '../assets/images/tool.png';
 import boxJpg from '../assets/images/box.jpg';
+import filingIcon from '../assets/images/filing_icon.jpg';
 
 interface Props {
   title?: string;
@@ -90,6 +91,15 @@ const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '';
           rel="noopener noreferrer"
         >
           粤ICP备2026126915号
+        </a>
+        <a
+          class="site-footer__filing"
+          href="https://beian.mps.gov.cn/#/query/webSearch?code=44010402003852"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={filingIcon.src} width="12" height="14" alt="" />
+          粤公网安备44010402003852号
         </a>
         <a
           href="https://www.xiaohongshu.com/user/profile/69fb3d8e0000000002001c08?xsec_token=ABpN3sUtBdDY6wccECFpZQ9qkfXazFRjUta0KNLon1ocY%3D&xsec_source=pc_search"

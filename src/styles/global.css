@@ -106,6 +106,19 @@ body {
     opacity: 0.75;
 }
 
+.site-footer__filing {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.site-footer__filing img {
+    display: block;
+    width: 12px;
+    height: 14px;
+    object-fit: contain;
+}
+
 /* Cabinet Grid */
 .cabinet-grid {
     display: grid;
@@ -319,9 +332,16 @@ body {
     #main-content { padding: 80px 20px 0; }
 
     .site-footer {
-        gap: 12px;
+        flex-wrap: wrap;
+        gap: 6px 12px;
         padding: 16px 20px calc(20px + env(safe-area-inset-bottom));
         font-size: 8px;
+        white-space: normal;
+    }
+
+    .site-footer__filing img {
+        width: 10px;
+        height: 11px;
     }
 }
 
